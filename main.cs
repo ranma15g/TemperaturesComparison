@@ -17,15 +17,15 @@ class Program {
 // We declare an input for the user to enter the temperatures
 string tempInput;
 
-// We create a list to store temperatures
-List<int> tempList= new List<int>();
-
+// We create an array to store the temperatures
+int[] tempArray = new int[5];
+    
 // int i is going to be used as a way of counting the number of times the user has inputted a temperature.
 int i = 0;
 
-    // while we are waiting for five temperatures to be recorded
-    while (i < 5) // We start a collection stack to gather data
-    {
+// while we are waiting for five temperatures to be recorded
+while (i < 5) // We start a collection stack to gather data
+{
 
     // user control
     Console.Write("Please input a temperature: ");
@@ -41,25 +41,17 @@ int i = 0;
         // Reprimand the individual for not following instructions
         Console.WriteLine ("I need an actual temperature: ");
 
-        // Record their input here
+        // Record their new input here
         tempInput = Console.ReadLine();
 
     }
 
-
-     
-    
-    
-    
-    
-    
-    
-    
+      
     // We now have an integer so we create a scenario
     // to use it as an integer for the sakes of comparison
     if (int.TryParse(tempInput, out int tempTrue) == true)
 
-    { // temperature pass stack begins
+    { // temperature pass sub-stack begins
       
         // if the integer does not fall within the range
         if (tempTrue < -30 || tempTrue > 130)
@@ -73,168 +65,144 @@ int i = 0;
         else
 
               {
-                  // collect the next temperature
+
+                  // add the temperature to the array
+                  tempArray[i] = tempTrue;
+
+                  // inform the parent while loop we are moving on to the
+                  // next temperature in our array of 5
                   i++;
 
-                  // We add the sales persons 
-                  // initial to the namesList
-                  tempList.Add(tempTrue);
+              }
 
-                }
+    } // temperature pass sub-stack closed
 
+} // end the temperature collection stack
 
-
-
-
-
-
-
-
-
-
-
-
-                
-  
-              
-      } // temperature pass stack closed
-
-
-
-
-
-
-   
-      
-    }
-
-
-
-    // If no temperature is lower than any previous one, display a message Getting warmer
-
-
-
-    int highestHeat = -31;
-
-    int heatCounter = 0;
-
-    foreach(int temp1 in tempList)
-
-      {
-
-
-        if ( temp1 > highestHeat)
-          {
-
-          highestHeat = temp1;
-
-          heatCounter++;
-
-          }
-
-        if (heatCounter == tempList.Count)
-          {
-
-          Console.WriteLine("\nIt's getting warmer");
-
-          }
-
-      }
-
-
-
-    // If every temperature is lower than the previous one, display a message Getting cooler
 
 
     
-    int highestCold = 131;
 
-    int coldCounter = 0;
+// We initialize a variable to test whether the temperature keeps climbing
+bool isAscending = false;
 
-    foreach(int temp2 in tempList)
+// We initialize a variable to test whether the temperature keeps lowering
+bool isDescending = false;
 
-      {
 
 
-        if ( temp2 < highestCold )
-          {
 
-          highestCold = temp2;
+    
 
-          coldCounter++;
-            
-          }
+/* ******************************************
+  Here we compare temperatures highs
+********************************************* */
 
-        if (coldCounter == tempList.Count)
-          {
+    
+// Declare a variable to store the highest temperature in the array
+int highestHeat = -31;
 
-          Console.WriteLine("\nIt's getting colder.");
-            
-          }
+// Declare a variable to keep track of how many times the highest 
+// temperature has been recorded
+int heatCounter = 0;
+
+// Now we loop through the array
+foreach(int temp1 in tempArray)
+
+    {
+
+      // if the current temperature is higher than the highest one recorded so far
+      if ( temp1 > highestHeat)
+        {
+
+        // the current temperature gets recorded as the new highest
+        highestHeat = temp1;
+
+        // we tell the program to mark down that it was hotter than last cycle
+        heatCounter++;
 
         }
 
+      // If the heatCounter is equal to the number of temperatures in the array
+      if (heatCounter == tempArray.Length)
+        {
+
+        // We tell the user that it's getting warmer because each value of the array
+        // ascended the element prior to it
+        Console.WriteLine("\nIt's getting warmer");
+
+        // We set the isAscending boolean to true
+        isAscending = true;
+        }
 
 
-
-
-    bool isAscending = true;
-    bool isDescending = true;
-
-
-    for (int o = 1; o < tempList.Count; o++)
-    {
-      if (tempList[o - 1] > tempList[o])
-      {
-        isAscending = false; // Not ascending if a larger element comes after a smaller one
-      }
-      if (tempList[o - 1] < tempList[o])
-      {
-        isDescending = false; // Not descending if a smaller element comes after a larger one
-      }
     }
 
-    if (!isAscending && !isDescending)
+
+
+    
+/* ******************************************
+  Here we compare temperatures lows
+********************************************* */
+
+// Declare a variable to store the coldest temperature in the array
+int highestCold = 131;
+
+// Declare a variable to keep track of how many times the lowest 
+// temperature has been recorded
+int coldCounter = 0;
+
+// Now we loop through the array
+foreach(int temp2 in tempArray)
+
     {
+  
+      // if the current temperature is lower than the lowest one recorded so far
+      if ( temp2 < highestCold )
+        {
+  
+        // the current temperature gets recorded as the new highest
+        highestCold = temp2;
+  
+        // we tell the program to mark down that it was hotter than last cycle
+        coldCounter++;
+          
+        }
+  
+      // If the coldCounter is equal to the number of temperatures in the array
+      if (coldCounter == tempArray.Length)
+        {
+  
+        // We tell the user that it's getting warmer because each value of the array
+        // ascended the element prior to it
+        Console.WriteLine("\nIt's getting colder.");
+  
+        // We set the isDescending boolean to true
+        isDescending = true;
+        }
+      
+      }
+  
+
+
+
+
+
+// If the temperatures in the array do not ascend or descend in sequential order
+if (!isAscending && !isDescending)
+    {  // Tell the user what type of weather they are dealing with
       Console.WriteLine("\nIt's a mixed bag");
     }
  
-       
-        
+// Finally, display the temperatures in the order they were entered, and then display the average of the temperatures.
+Console.WriteLine("\n\nOutput 5-Day Temperature[" + tempArray[0] + ", " + tempArray[1] + ", " + tempArray[2] + ", " + tempArray[3] + ", " + tempArray[4] + "]");
 
-        
-        
-    
+// Get the average for all of the temperatures in the array
+double tempListAverage = tempArray.Average();
 
-
-
-
-
-
-
-
-
-
-
-
-                    
-
-
- 
-
-
-
- 
+// Print out for the audience what the average for the temperatures is
+Console.WriteLine("\n\nAverage Temperature is " + tempListAverage + " degrees");
       
-  
-  
-  // Finally, display the temperatures in the order they were entered, and then display the average of the temperatures.
-    
-    Console.WriteLine("\n\nOutput 5-Day Temperature[" + tempList[0] + ", " + tempList[1] + ", " + tempList[2] + ", " + tempList[3] + ", " + tempList[4] + "]");
+}
 
-    double tempListAverage = tempList.Average();
-
-    Console.WriteLine("\n\nAverage Temperature is " + tempListAverage + " degrees");
-      
-  }
 }
